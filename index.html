@@ -1,0 +1,2084 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>REAL X 1.0 l X보다 재밌는 현실 만들기</title>
+
+  <!-- Pretendard 공식 Web Font CDN -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Supabase JS Client CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            appleBg: '#090A0F',
+            appleCard: 'rgba(18, 20, 29, 0.72)',
+            appleBorder: 'rgba(255, 255, 255, 0.08)',
+            geminiCyan: '#00F0FF',
+            geminiIndigo: '#6366F1',
+            geminiPurple: '#A855F7',
+            geminiCoral: '#FF3366',
+            geminiGreen: '#10B981',
+            geminiGold: '#F59E0B'
+          },
+          fontFamily: {
+            sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+            mono: ['Pretendard', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    * {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif !important;
+      letter-spacing: -0.02em;
+    }
+    body {
+      background-color: #08090D;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(0, 240, 255, 0.08) 0px, transparent 50%),
+        radial-gradient(at 50% 50%, rgba(168, 85, 247, 0.05) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: #F4F4F5;
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.25); }
+
+    /* Apple-Gemini Aura Glow */
+    .gemini-text-gradient {
+      background: linear-gradient(135deg, #00F0FF 0%, #818CF8 50%, #C084FC 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .apple-glass {
+      background: rgba(18, 20, 29, 0.65);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    }
+    .apple-glass-card {
+      background: rgba(25, 28, 40, 0.45);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .apple-glass-card:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+      background: rgba(30, 34, 48, 0.55);
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 20px rgba(0, 240, 255, 0.3), 0 0 40px rgba(99, 102, 241, 0.15); }
+      50% { box-shadow: 0 0 35px rgba(0, 240, 255, 0.6), 0 0 60px rgba(168, 85, 247, 0.3); }
+    }
+    .fab-glow {
+      animation: pulseGlow 3s infinite ease-in-out;
+    }
+    @keyframes bump {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.25); }
+      100% { transform: scale(1); }
+    }
+    .animate-bump {
+      animation: bump 0.25s ease-out;
+    }
+  </style>
+
+  <style id="realx-redesign">
+    :root{color-scheme:light;--ink:#171717;--muted:#737373;--line:#e5e7eb;--surface:#ffffff;--soft:#f7f7f8;--accent:#10a37f;--accent-dark:#087f62}
+    html{background:#f7f7f8!important;scroll-behavior:smooth}
+    body{background:#f7f7f8!important;background-image:none!important;color:var(--ink)!important;padding-bottom:7rem!important;font-size:14px;line-height:1.55}
+    body *{letter-spacing:-.018em}
+    #particleCanvas{z-index:1;opacity:.18;pointer-events:none}
+    body>div.max-w-4xl{position:relative;z-index:2;max-width:1040px!important;padding-top:28px!important;gap:22px!important}
+    .apple-glass,.apple-glass-card{background:rgba(255,255,255,.92)!important;backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important;border:1px solid #e7e7e9!important;box-shadow:0 2px 8px rgba(0,0,0,.025),0 12px 32px rgba(0,0,0,.025)!important;color:#171717!important}
+    .apple-glass{border-radius:24px!important}
+    .apple-glass-card{border-radius:18px!important}
+    .apple-glass-card:hover{background:#fff!important;border-color:#d4d4d8!important;transform:translateY(-1px)}
+    header.apple-glass{padding:30px!important}
+    h1{font-size:clamp(26px,4vw,36px)!important;line-height:1.18!important;font-weight:750!important;letter-spacing:-.055em!important;color:#171717!important}
+    h2,h3,h4{letter-spacing:-.035em!important;color:#171717!important}
+    .gemini-text-gradient{background:none!important;-webkit-text-fill-color:#171717!important;color:#171717!important}
+    .text-white,.text-zinc-100,.text-zinc-200,.text-zinc-300{color:#262626!important}
+    .text-zinc-400{color:#737373!important}.text-zinc-500{color:#8a8a8a!important}.text-zinc-600{color:#a3a3a3!important}
+    .text-cyan-300,.text-cyan-400,.text-indigo-300,.text-indigo-400,.text-purple-300,.text-amber-400{color:#0d8f70!important}
+    .bg-black\/30,.bg-black\/40,.bg-black\/50,.bg-black\/60,.bg-black\/\[\.04\],.bg-white\/\[\.02\],.bg-white\/\[\.03\],.bg-white\/\[\.04\],.bg-white\/\[\.05\],.bg-white\/\[\.06\],.bg-white\/10{background:#f6f7f8!important}
+    .border-white\/\[\.06\],.border-white\/\[\.08\],.border-white\/10{border-color:#e5e7eb!important}
+    .border-b{border-color:#e5e7eb!important}
+    input:not([type=checkbox]),select,textarea{background:#fff!important;color:#171717!important;border:1px solid #d4d4d8!important;border-radius:12px!important;min-height:42px;box-shadow:inset 0 1px 1px rgba(0,0,0,.015)!important}
+    input::placeholder,textarea::placeholder{color:#a1a1aa!important}
+    input:focus,select:focus,textarea:focus{outline:none!important;border-color:#10a37f!important;box-shadow:0 0 0 3px rgba(16,163,127,.13)!important}
+    button{font-family:inherit;transition:background-color .16s ease,border-color .16s ease,transform .16s ease,box-shadow .16s ease}
+    button:focus-visible{outline:3px solid rgba(16,163,127,.3);outline-offset:2px}
+    button[class*="bg-gradient"]{background:#10a37f!important;color:#fff!important;border:1px solid #10a37f!important;box-shadow:0 2px 4px rgba(16,163,127,.12)!important}
+    button[class*="bg-gradient"]:hover{background:#0d8f70!important;opacity:1!important}
+    #openAddModalBtn{background:#171717!important;color:#fff!important;border:0!important;box-shadow:0 8px 28px rgba(0,0,0,.18)!important;animation:none!important}
+    #openAddModalBtn:hover{background:#333!important;transform:translateY(-2px) scale(1.01)!important}
+    .fab-glow{animation:none!important}
+    #calendarSection,#calendarSection+section,#calendarSection+section+section{padding:24px!important}
+    #calendarGrid button{min-height:58px!important;border-radius:14px!important;font-size:13px!important}
+    #calendarGrid button:hover{background:#f0fdfa!important}
+    #questList>div{border-radius:16px!important}
+    #emptyQuestState{background:#fafafa!important;border-color:#d4d4d8!important}
+    .fixed.inset-0{background:rgba(20,20,20,.42)!important;backdrop-filter:blur(10px)!important;-webkit-backdrop-filter:blur(10px)!important}
+    .fixed.inset-0>.apple-glass{background:#fff!important;border:1px solid rgba(0,0,0,.08)!important;box-shadow:0 24px 80px rgba(0,0,0,.2)!important;border-radius:24px!important;color:#171717!important}
+    .fixed.inset-0 .sticky{background:rgba(255,255,255,.94)!important;border-color:#e5e7eb!important}
+    #primingCard{background:#fff8f7!important;border-color:#f3c6c1!important}
+    #planLockOverlay{background:rgba(255,255,255,.88)!important;color:#171717!important}
+    #planLockOverlay h4{color:#171717!important}
+    #rewardTiersListContainer>div,#mgmtPresetsListContainer>div{border-color:#e5e7eb!important;border-radius:14px!important}
+    #rewardTiersListContainer .bg-black\/30,#rewardProgressSummary{background:#f5f5f5!important}
+    #sparkErrorMsg{color:#dc2626!important}
+    ::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#d4d4d8;border-radius:999px}::-webkit-scrollbar-thumb:hover{background:#a1a1aa}
+    @media(max-width:640px){body>div.max-w-4xl{padding:14px!important;gap:14px!important}header.apple-glass{padding:22px!important}#calendarSection,#calendarSection+section,#calendarSection+section+section{padding:17px!important}#calendarGrid{gap:4px!important}#calendarGrid button{min-height:46px!important;padding:5px!important}.fixed.inset-0{padding:10px!important}.fixed.inset-0>.apple-glass{border-radius:18px!important;padding:17px!important}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
+  </style>
+
+
+  <style id="realx-ux-refinement">
+    body{font-size:16px!important;line-height:1.65!important}
+    body>div.max-w-4xl{max-width:1160px!important;padding-top:24px!important;gap:24px!important}
+    .text-xs{font-size:14px!important;line-height:1.5!important}
+    .text-sm{font-size:15px!important;line-height:1.55!important}
+    .text-base{font-size:17px!important;line-height:1.6!important}
+    .text-lg{font-size:19px!important;line-height:1.45!important}
+    .text-xl{font-size:22px!important;line-height:1.35!important}
+    .text-2xl{font-size:27px!important;line-height:1.25!important}
+    .text-3xl{font-size:32px!important;line-height:1.2!important}
+    .realx-brand-header{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;padding:4px 0 22px!important;border-bottom:1px solid #e5e7eb!important}
+    .realx-wordmark{font-size:clamp(32px,4vw,42px);line-height:1;font-weight:850;letter-spacing:-.085em;color:#171717;white-space:nowrap}
+    .realx-wordmark span{color:#10a37f;letter-spacing:-.09em}
+    #calendarSection,#calendarSection+section,#calendarSection+section+section{padding:28px!important}
+    #calendarGrid button{min-height:64px!important;font-size:14px!important}
+    button{min-height:40px}
+    input:not([type=checkbox]),select,textarea{font-size:16px!important;min-height:46px!important;padding-top:10px!important;padding-bottom:10px!important}
+    label{line-height:1.5}
+    .fixed.inset-0>.apple-glass{max-width:min(760px,calc(100vw - 24px))!important}
+    @media(max-width:640px){
+      body{font-size:15px!important}
+      body>div.max-w-4xl{padding:16px!important;gap:16px!important}
+      .realx-brand-header{padding:4px 0 18px!important;gap:14px!important}
+      .realx-wordmark{font-size:34px}
+      #calendarSection,#calendarSection+section,#calendarSection+section+section{padding:18px!important}
+      #calendarGrid button{min-height:48px!important;font-size:13px!important;padding:5px!important}
+      .text-xs{font-size:13px!important}
+      .text-sm{font-size:14px!important}
+      .text-base{font-size:16px!important}
+    }
+  </style>
+
+</head>
+<body class="min-h-screen selection:bg-cyan-500/20 selection:text-cyan-300 pb-32">
+
+  <!-- 파티클 이펙트 캔버스 -->
+  <canvas id="particleCanvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
+
+    <!-- 1. Minimal REAL X brand header -->
+    <header class="realx-brand-header flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div class="realx-wordmark" aria-label="REAL X">REAL <span>X</span></div>
+      <div class="flex flex-wrap items-center gap-2 sm:justify-end">
+        <button onclick="openMgmtModal()" class="px-4 py-2.5 rounded-2xl apple-glass-card hover:bg-white/10 text-sm text-zinc-200 font-semibold flex items-center gap-2 transition-all cursor-pointer shadow-sm">
+          <i data-lucide="sliders" class="w-4 h-4"></i>
+          <span>커스텀 관리</span>
+        </button>
+        <button id="openConfigBtn" class="px-4 py-2.5 rounded-2xl apple-glass-card hover:bg-white/10 text-sm text-zinc-200 font-semibold flex items-center gap-2 transition-all cursor-pointer shadow-sm">
+          <i data-lucide="database" class="w-4 h-4"></i>
+          <span id="dbStatusLabel">로컬 모드</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. 월간 캘린더 (Apple Calendar 스타일 상시 노출) -->
+    <section id="calendarSection" class="apple-glass rounded-3xl p-5 sm:p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-white/[0.06] pb-3.5">
+        <div class="flex items-center gap-3">
+          <div class="p-2.5 rounded-2xl bg-gradient-to-br from-cyan-500/10 to-indigo-500/10 border border-cyan-400/20 text-cyan-300">
+            <i data-lucide="calendar" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h2 id="calendarMonthTitle" class="text-base font-bold text-white tracking-tight">2026년 10월</h2>
+            <div class="text-[11px] text-zinc-400">날짜를 클릭하면 아래 실행 보드가 해당 날짜로 즉시 전환됩니다</div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-1.5 bg-black/30 p-1 rounded-2xl border border-white/[0.06]">
+          <button onclick="changeCalMonth(-1)" class="p-1.5 rounded-xl text-zinc-400 hover:text-white hover:bg-white/10 transition-colors">
+            <i data-lucide="chevron-left" class="w-4 h-4"></i>
+          </button>
+          <button onclick="changeCalMonth(1)" class="p-1.5 rounded-xl text-zinc-400 hover:text-white hover:bg-white/10 transition-colors">
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 요일 헤더 -->
+      <div class="grid grid-cols-7 gap-1.5 text-center text-[11px] font-semibold text-zinc-400 py-0.5">
+        <div class="text-rose-400">일</div>
+        <div>월</div>
+        <div>화</div>
+        <div>수</div>
+        <div>목</div>
+        <div>금</div>
+        <div class="text-cyan-400">토</div>
+      </div>
+
+      <!-- 달력 날짜 그리드 -->
+      <div id="calendarGrid" class="grid grid-cols-7 gap-1.5"></div>
+    </section>
+
+    <!-- 3. 선택된 일자 실행 보드 (Apple Reminders 스타일) -->
+    <section class="apple-glass rounded-3xl p-5 sm:p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-white/[0.06] pb-3.5">
+        <div class="flex items-center gap-3">
+          <div class="p-2.5 rounded-2xl bg-indigo-500/10 border border-indigo-400/20 text-indigo-300">
+            <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <div class="text-[10px] text-zinc-400 uppercase font-bold tracking-widest">ACTIVE DATE BOARD</div>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span id="activeDateDisplay" class="text-lg font-black text-white">2026. 10. 12 (월)</span>
+              <span id="activeDateBadge" class="text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-cyan-950/80 text-cyan-300 border border-cyan-800/40">오늘 (TODAY)</span>
+              <span id="questTotalCountBadge" class="px-2.5 py-0.5 rounded-full text-[10px] bg-white/[0.04] text-zinc-400 border border-white/[0.06]">0건</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-1.5 bg-black/30 p-1 rounded-2xl border border-white/[0.06]">
+          <button onclick="offsetActiveDate(-1)" class="p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-white/10 transition-colors" title="이전 날짜">
+            <i data-lucide="chevron-left" class="w-4 h-4"></i>
+          </button>
+          <button onclick="offsetActiveDate(1)" class="p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-white/10 transition-colors" title="다음 날짜">
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 퀘스트 피드 리스트 -->
+      <div id="questList" class="space-y-3"></div>
+
+      <!-- 빈 상태 안내 -->
+      <div id="emptyQuestState" class="text-center py-14 border border-dashed border-white/10 rounded-2xl hidden">
+        <div class="w-12 h-12 rounded-full bg-white/[0.03] border border-white/10 flex items-center justify-center mx-auto mb-3 text-zinc-500">
+          <i data-lucide="sparkles" class="w-6 h-6"></i>
+        </div>
+        <p class="text-sm text-zinc-300 font-semibold">이 날짜에 등록된 플랜이 없습니다.</p>
+        <p class="text-xs text-zinc-500 mt-1">오른쪽 하단의 <strong class="text-geminiCyan font-bold">+ 플랜 추가</strong>를 눌러 새 모험을 등록하세요!</p>
+      </div>
+    </section>
+
+    <!-- 4. 메인 최하단: IDEA-ACTION LOCK 콘솔 (Gemini 프롬프트 스타일) -->
+    <section class="apple-glass rounded-3xl p-5 sm:p-6 space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="p-2 rounded-xl bg-cyan-500/10 border border-cyan-400/20 text-cyan-300">
+            <i data-lucide="zap" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h2 class="font-bold text-sm text-white">
+              IDEA-ACTION LOCK: 계획 1개 + 즉각 행동 1개
+            </h2>
+            <div class="text-[11px] text-zinc-400">아이디어가 스친 그 자리에서 60초 현실 행동을 강제 연결합니다</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label class="text-[11px] text-zinc-400 mb-1.5 block font-medium">떠오른 생각 / 아이디어</label>
+          <input id="sparkIdeaInput" type="text" placeholder="예: 새 웹사이트를 런칭하고 싶다" class="w-full bg-black/40 border border-white/[0.08] focus:border-cyan-400 rounded-2xl px-4 py-2.5 text-xs text-white placeholder-zinc-600 focus:outline-none transition-all">
+        </div>
+        <div>
+          <label class="text-[11px] text-geminiCyan mb-1.5 block font-bold">지금 즉시 행한 60초 현실 행동 (강제)</label>
+          <input id="sparkActionInput" type="text" placeholder="예: HTML index.html 파일 생성 및 제목 작성" class="w-full bg-black/40 border border-white/[0.08] focus:border-cyan-400 rounded-2xl px-4 py-2.5 text-xs text-white placeholder-zinc-600 focus:outline-none transition-all">
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center pt-1">
+        <span id="sparkErrorMsg" class="text-xs text-rose-400 font-medium hidden">생각과 즉각 행동 1개를 모두 입력해야 합니다.</span>
+        <button onclick="publishSpark()" class="ml-auto px-5 py-2.5 rounded-2xl bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-500 hover:opacity-95 text-white font-bold text-xs flex items-center gap-1.5 shadow-lg shadow-indigo-950/40 transition-all cursor-pointer">
+          <span>스파크 발행 및 현실 증명</span>
+          <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+
+      <!-- 최근 격파한 현실 행동 피드 (개별 삭제 지원) -->
+      <div id="sparksListContainer" class="pt-3 border-t border-white/[0.06] space-y-2 hidden">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] text-zinc-400 uppercase tracking-wider block font-bold">최근 격파한 현실 행동 피드</span>
+          <span class="text-[10px] text-zinc-600">휴지통 클릭 시 개별 삭제</span>
+        </div>
+        <div id="sparksFeed" class="max-h-36 overflow-y-auto space-y-2 pr-1"></div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- 5. Apple 스타일 플로팅 '+' 액션 버튼 (FAB) -->
+  <button
+    id="openAddModalBtn"
+    onclick="openAddModal()"
+    class="fixed bottom-6 right-6 z-40 fab-glow bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-400 hover:scale-105 active:scale-95 text-black font-black rounded-full flex items-center justify-center gap-2 p-4 sm:px-6 sm:py-4 transition-all duration-300 shadow-2xl cursor-pointer"
+    title="플랜 추가 및 보상 허브 열기"
+  >
+    <i data-lucide="plus" class="w-6 h-6 stroke-[3]"></i>
+    <span class="hidden sm:inline text-xs font-black tracking-wide pr-1">플랜 & 보상 허브</span>
+  </button>
+
+  <!-- 6. 팝업 모달 1: 플랜 추가 창 ([보상] 좌측 세션 박스 탑재) -->
+  <div id="addModal" class="fixed inset-0 bg-black/80 backdrop-blur-xl z-50 flex items-center justify-center p-3 sm:p-5 hidden">
+    <div class="apple-glass rounded-3xl max-w-5xl w-full max-h-[92vh] overflow-y-auto p-5 sm:p-7 space-y-6 shadow-2xl relative border border-white/10">
+      
+      <!-- 모달 헤더 -->
+      <div class="flex items-center justify-between border-b border-white/[0.06] pb-4 sticky top-0 bg-[#0B0D14]/90 backdrop-blur-xl z-20">
+        <div>
+          <span class="text-[10px] font-bold text-geminiCyan tracking-widest uppercase block">ACTION & REWARD CENTER</span>
+          <h2 class="text-base sm:text-lg font-black text-white mt-0.5">
+            플랜 등록 & 상태 각성 & 보상 허브
+          </h2>
+        </div>
+        <button onclick="closeAddModal()" class="p-2 rounded-2xl bg-white/[0.05] hover:bg-white/10 border border-white/[0.08] text-zinc-400 hover:text-white transition-colors">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- 1순위: 최상단 STATE PRIMING -->
+      <section id="primingCard" class="border rounded-2xl p-4 sm:p-5 transition-all bg-[#140f13] border-rose-500/30">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2.5">
+          <div class="flex items-center gap-2">
+            <i id="primingIcon" data-lucide="lock" class="w-4 h-4 text-rose-500"></i>
+            <h3 class="font-bold text-xs sm:text-sm text-zinc-200">
+              STATE PRIMING: "상태를 바꾼 뒤 인생을 한다"
+            </h3>
+          </div>
+          <span id="primingBadge" class="text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-rose-500/20 text-rose-400 self-start sm:self-auto">
+            신체 각성 필수 (완료 전 플랜 잠김)
+          </span>
+        </div>
+
+        <p class="text-xs text-zinc-400 mb-3 leading-relaxed">
+          뇌는 운동을 싫어하는 게 아니라 <strong>시작 전 마찰</strong>을 싫어합니다. 운동 3단계 마찰 분쇄 또는 찬물샤워 5분 중 하나를 완료해야 플랜을 등록할 수 있습니다.
+        </p>
+
+        <!-- 모드 탭 -->
+        <div class="flex items-center gap-2 mb-3 border-b border-white/[0.06] pb-2">
+          <button id="primeTabWorkout" onclick="switchPrimeMode('workout')" class="px-3 py-1 rounded-xl text-xs font-bold border border-cyan-500/40 bg-cyan-500/10 text-cyan-400 flex items-center gap-1.5 transition-all">
+            <i data-lucide="dumbbell" class="w-3.5 h-3.5"></i>
+            <span>A. 운동 3단계 마찰 분쇄</span>
+          </button>
+          <button id="primeTabShower" onclick="switchPrimeMode('shower')" class="px-3 py-1 rounded-xl text-xs font-semibold border border-white/[0.08] bg-white/[0.02] text-zinc-400 hover:text-zinc-200 flex items-center gap-1.5 transition-all">
+            <i data-lucide="droplets" class="w-3.5 h-3.5"></i>
+            <span>B. 찬물샤워 5분</span>
+          </button>
+        </div>
+
+        <!-- 모드 A: 운동 3단계 -->
+        <div id="workoutPrimeView" class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <button onclick="toggleWorkoutPriming(1)" id="primeBtn1" class="py-2.5 px-3 rounded-2xl border border-white/[0.08] bg-white/[0.02] text-xs font-semibold flex items-center justify-center gap-1.5 text-zinc-400 transition-all hover:bg-white/[0.05]">
+            <i data-lucide="circle" class="w-3.5 h-3.5"></i>
+            1. 운동복 입기
+          </button>
+          <button onclick="toggleWorkoutPriming(2)" id="primeBtn2" class="py-2.5 px-3 rounded-2xl border border-white/[0.08] bg-white/[0.02] text-xs font-semibold flex items-center justify-center gap-1.5 text-zinc-400 transition-all hover:bg-white/[0.05]">
+            <i data-lucide="circle" class="w-3.5 h-3.5"></i>
+            2. 신발 신기
+          </button>
+          <button onclick="toggleWorkoutPriming(3)" id="primeBtn3" class="py-2.5 px-3 rounded-2xl border border-white/[0.08] bg-white/[0.02] text-xs font-semibold flex items-center justify-center gap-1.5 text-zinc-400 transition-all hover:bg-white/[0.05]">
+            <i data-lucide="circle" class="w-3.5 h-3.5"></i>
+            3. 헬스장 도착 / 10분 활주
+          </button>
+        </div>
+
+        <!-- 모드 B: 찬물샤워 5분 -->
+        <div id="showerPrimeView" class="bg-black/40 border border-white/[0.06] rounded-2xl p-3 flex flex-col sm:flex-row items-center justify-between gap-3 hidden">
+          <div class="text-xs text-zinc-300">
+            <strong class="text-cyan-400 font-bold">찬물샤워 5분:</strong> 망설임을 끊고 체온을 떨어뜨려 도파민 각성 부스트를 켭니다.
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="flex items-center gap-1.5 bg-black/60 border border-white/[0.08] rounded-xl px-3 py-1">
+              <span id="showerTimerText" class="text-xs font-bold text-geminiCyan font-mono">05:00</span>
+              <button onclick="toggleShowerTimer()" class="p-1 text-zinc-400 hover:text-white">
+                <i id="showerTimerIcon" data-lucide="play" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+            <button id="showerCompleteBtn" onclick="toggleShowerComplete()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold border border-cyan-500/40 bg-cyan-500/10 text-cyan-300 hover:bg-cyan-500/20 transition-all flex items-center gap-1">
+              <i data-lucide="check" class="w-3.5 h-3.5"></i>
+              <span id="showerCompleteLabel">찬물샤워 5분 완료</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2순위: 2-COLUMN 매트릭스 레이아웃 (좌측: [보상 세션] / 우측: [플랜 등록]) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+        
+        <!-- [좌측 세션]: [보상] 단계별 해금 매트릭스 박스 (lg:col-span-5) -->
+        <section class="lg:col-span-5 apple-glass-card rounded-3xl p-4 sm:p-5 space-y-4">
+          <div class="flex items-center justify-between border-b border-white/[0.06] pb-3">
+            <div class="flex items-center gap-2">
+              <div class="p-1.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400">
+                <i data-lucide="gift" class="w-4 h-4"></i>
+              </div>
+              <div>
+                <h3 class="font-black text-sm text-white flex items-center gap-1.5">
+                  <span>[보상] REWARD LOCKER</span>
+                </h3>
+                <span class="text-[10px] text-zinc-400">5가지 항목 모두 달성 시 단계별 해금</span>
+              </div>
+            </div>
+            <span id="rewardMinLevelBadge" class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-white/[0.04] border border-white/[0.08] text-zinc-400">
+              최소 기준치: 0
+            </span>
+          </div>
+
+          <!-- 5대 요소 현재 달성 상태 바 -->
+          <div class="bg-black/30 border border-white/[0.06] rounded-2xl p-3 space-y-1 text-[11px]">
+            <div class="flex items-center justify-between text-zinc-400 font-semibold">
+              <span>오늘의 5대 요소 격파 현황</span>
+              <span id="rewardProgressSummary" class="text-geminiCyan font-bold">N:0 P:0 Po:0 F:0 D:0</span>
+            </div>
+            <div class="text-[10px] text-zinc-500 leading-tight">
+              ※ 5가지 항목 중 단 하나라도 부족하면 상위 단계가 해금되지 않습니다.
+            </div>
+          </div>
+
+          <!-- 3단계 보상 리스트 박스들 -->
+          <div class="space-y-2.5" id="rewardTiersListContainer">
+            <!-- JS 동적 렌더링 -->
+          </div>
+        </section>
+
+        <!-- [우측 세션]: 3단 카테고리 플랜 등록 & 완전 랜덤 생성 (lg:col-span-7) -->
+        <section class="lg:col-span-7 relative apple-glass-card rounded-3xl p-4 sm:p-5 space-y-4 overflow-hidden">
+          
+          <!-- 각성 미완료 시 노출되는 잠금 오버레이 -->
+          <div id="planLockOverlay" class="absolute inset-0 bg-black/85 backdrop-blur-md z-10 flex flex-col items-center justify-center p-6 text-center">
+            <div class="p-3 rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-500 mb-2">
+              <i data-lucide="lock" class="w-6 h-6"></i>
+            </div>
+            <h4 class="text-sm font-bold text-white">신체 각성(PRIMING) 후 플랜 등록 가능</h4>
+            <p class="text-xs text-zinc-400 mt-1 max-w-sm">
+              상단에서 <strong>운동 3단계 마찰 분쇄</strong> 또는 <strong>찬물샤워 5분</strong>을 먼저 완료해주세요. 상태를 바꾼 뒤 인생을 시작합니다.
+            </p>
+          </div>
+
+          <!-- 플랜 폼 본문 -->
+          <div id="planFormContent" class="space-y-4">
+            <div class="flex items-center justify-between border-b border-white/[0.06] pb-2">
+              <div class="flex items-center gap-2">
+                <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i>
+                <h3 class="font-bold text-xs sm:text-sm text-zinc-100">
+                  <span id="modalTargetDateLabel" class="text-geminiCyan">선택일</span> 플랜 등록
+                </h3>
+              </div>
+              <span class="text-[10px] text-zinc-500">행동(필수) + 피드백(선택) + 마감(선택)</span>
+            </div>
+
+            <!-- 3대 카테고리 독립 입력 그리드 -->
+            <div class="grid grid-cols-1 gap-3">
+              <!-- 1. 핵심 행동 (1·2·3번 택1) -->
+              <div class="bg-black/30 border border-cyan-500/25 rounded-2xl p-3.5 space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-cyan-300 flex items-center gap-1">
+                    <i data-lucide="zap" class="w-3.5 h-3.5"></i>
+                    <span>1. 핵심 행동 (필수 - 1·2·3번 택1)</span>
+                  </span>
+                </div>
+
+                <select id="actionCategorySelect" onchange="onActionCategoryChange()" class="w-full bg-black/60 border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400">
+                  <option value="NEW">① NEW — 매일 새로운 것 하나</option>
+                  <option value="PEOPLE">② PEOPLE — 사람을 현실의 피드로</option>
+                  <option value="POSSIBILITY">③ POSSIBILITY — "될 수도 있음" 씨앗</option>
+                </select>
+
+                <select id="actionPresetSelect" onchange="onActionPresetSelect()" class="w-full bg-black/60 border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-zinc-300 focus:outline-none focus:border-cyan-400">
+                </select>
+
+                <input id="actionTitleInput" type="text" placeholder="실행할 행동을 입력하세요..." class="w-full bg-black/60 border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-cyan-400">
+              </div>
+
+              <!-- 2. 피드백 (4번) -->
+              <div id="feedbackPanel" class="bg-black/30 border border-white/[0.08] rounded-2xl p-3.5 space-y-2 transition-all">
+                <div class="flex items-center justify-between">
+                  <label class="text-xs font-bold text-purple-300 flex items-center gap-1.5 cursor-pointer">
+                    <input type="checkbox" id="feedbackEnableCheckbox" onchange="toggleFeedbackPanel()" class="rounded border-zinc-700 text-purple-500 focus:ring-0">
+                    <span>2. ④ FEEDBACK (선택)</span>
+                  </label>
+                  <span id="feedbackStateBadge" class="text-[10px] text-zinc-500">선택 안 함</span>
+                </div>
+
+                <select id="feedbackPresetSelect" onchange="onFeedbackPresetSelect()" class="w-full bg-black/60 border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-zinc-300 focus:outline-none focus:border-purple-400">
+                </select>
+
+                <input id="feedbackDescInput" oninput="onFeedbackInputTyped()" type="text" placeholder="누구에게 어떻게 보여줄 것인가?" class="w-full bg-black/60 border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-purple-400">
+              </div>
+
+              <!-- 3. 데드라인 (5번) -->
+              <div id="deadPanel" class="bg-black/30 border border-white/[0.08] rounded-2xl p-3.5 space-y-2 transition-all">
+                <div class="flex items-center justify-between">
+                  <label class="text-xs font-bold text-rose-300 flex items-center gap-1.5 cursor-pointer">
+                    <input type="checkbox" id="deadEnableCheckbox" onchange="toggleDeadPanel()" class="rounded border-zinc-700 text-rose-500 focus:ring-0">
+                    <span>3. ⑤ DEADLINE (선택)</span>
+                  </label>
+                  <span id="deadStateBadge" class="text-[10px] text-zinc-500">선택 안 함</span>
+                </div>
+
+                <select id="deadPresetSelect" onchange="onDeadPresetSelect()" class="w-full bg-black/60 border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-zinc-300 focus:outline-none focus:border-rose-400">
+                </select>
+
+                <input id="deadDescInput" oninput="onDeadInputTyped()" type="text" placeholder="언제까지 무엇을 걸고 끝낼 것인가?" class="w-full bg-black/60 border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-rose-400">
+              </div>
+            </div>
+
+            <!-- 하단 버튼 영역: 완전 랜덤 생성 + 플랜 등록 -->
+            <div class="flex flex-col sm:flex-row items-center justify-end gap-2.5 pt-2">
+              <button
+                type="button"
+                onclick="generateFullRandomQuest()"
+                class="w-full sm:w-auto px-4 py-2.5 bg-gradient-to-r from-purple-950/60 to-indigo-950/60 hover:from-purple-900/80 hover:to-indigo-900/80 text-cyan-300 font-bold text-xs rounded-2xl flex items-center justify-center gap-2 transition-all cursor-pointer border border-cyan-400/30 shadow-lg group"
+                title="모든 선택지 풀에서 완전 무작위로 1개 자동 생성"
+              >
+                <i data-lucide="dice-5" class="w-4 h-4 text-cyan-400 group-hover:rotate-180 transition-transform duration-500"></i>
+                <span>완전 랜덤 생성 (🎲)</span>
+              </button>
+
+              <button
+                type="button"
+                onclick="addCustomQuest()"
+                class="w-full sm:w-auto px-5 py-2.5 bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-400 hover:opacity-95 text-black font-black text-xs rounded-2xl flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-lg shadow-indigo-950/40"
+              >
+                <i data-lucide="plus" class="w-4 h-4 stroke-[3]"></i>
+                <span>플랜 등록 및 즉시 보드 반영</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 7. 팝업 모달 2: 커스텀 관리 센터 (추천 선택지 & 보상 내용 수정) -->
+  <div id="mgmtModal" class="fixed inset-0 bg-black/80 backdrop-blur-xl z-50 flex items-center justify-center p-3 sm:p-5 hidden">
+    <div class="apple-glass rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-5 sm:p-7 space-y-5 shadow-2xl relative border border-white/10">
+      
+      <!-- 헤더 -->
+      <div class="flex items-center justify-between border-b border-white/[0.06] pb-4 sticky top-0 bg-[#0B0D14]/90 backdrop-blur-xl z-20">
+        <div>
+          <span class="text-[10px] font-bold text-indigo-400 tracking-widest uppercase block">SYSTEM CONFIGURATION</span>
+          <h2 class="text-base sm:text-lg font-black text-white mt-0.5">
+            커스텀 관리 센터
+          </h2>
+        </div>
+        <button onclick="closeMgmtModal()" class="p-2 rounded-2xl bg-white/[0.05] hover:bg-white/10 border border-white/[0.08] text-zinc-400 hover:text-white transition-colors">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- 관리 탭 버튼 (Apple Segmented Style) -->
+      <div class="flex p-1 bg-black/40 rounded-2xl border border-white/[0.06] gap-1">
+        <button id="mgmtTabPresetsBtn" onclick="switchMgmtTab('presets')" class="flex-1 py-2 text-xs font-bold rounded-xl bg-white/10 text-white transition-all flex items-center justify-center gap-1.5">
+          <i data-lucide="list-plus" class="w-3.5 h-3.5 text-cyan-400"></i>
+          <span>1~5번 행동 추천 선택지 관리</span>
+        </button>
+        <button id="mgmtTabRewardsBtn" onclick="switchMgmtTab('rewards')" class="flex-1 py-2 text-xs font-semibold rounded-xl text-zinc-400 hover:text-white transition-all flex items-center justify-center gap-1.5">
+          <i data-lucide="gift" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span>보상(REWARD) 내용 및 해금 조건 수정</span>
+        </button>
+      </div>
+
+      <!-- 탭 1: 추천 선택지 관리 섹션 -->
+      <div id="mgmtPresetsView" class="space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-zinc-400 font-medium">관리할 카테고리:</span>
+            <select id="mgmtCategorySelect" onchange="renderMgmtPresetsList()" class="bg-black/60 border border-white/[0.08] text-white rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:border-cyan-400">
+              <option value="NEW">① NEW — 매일 새로운 것</option>
+              <option value="PEOPLE">② PEOPLE — 사람을 피드로</option>
+              <option value="POSSIBILITY">③ POSSIBILITY — 불확실성 씨앗</option>
+              <option value="FEEDBACK">④ FEEDBACK — 세상에 던지기</option>
+              <option value="DEADLINE">⑤ DEADLINE — 마감 시스템</option>
+            </select>
+          </div>
+
+          <button onclick="resetPresetsToDefault()" class="text-[11px] text-zinc-400 hover:text-rose-400 flex items-center gap-1 transition-colors self-end sm:self-auto">
+            <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
+            <span>선택지 기본 20선으로 초기화</span>
+          </button>
+        </div>
+
+        <!-- 새 선택지 추가 인풋 -->
+        <div class="flex gap-2">
+          <input id="newPresetInput" type="text" placeholder="새로운 실천 추천 문항을 입력하세요..." class="flex-1 bg-black/50 border border-white/[0.08] focus:border-cyan-400 rounded-2xl px-4 py-2 text-xs text-white placeholder-zinc-600 focus:outline-none">
+          <button onclick="addNewPresetItem()" class="px-4 py-2 bg-gradient-to-r from-cyan-500 to-indigo-500 hover:opacity-90 text-white font-bold text-xs rounded-2xl flex items-center gap-1 transition-all cursor-pointer">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+            <span>추가</span>
+          </button>
+        </div>
+
+        <!-- 현재 등록된 선택지 리스트 -->
+        <div class="space-y-1.5 max-h-72 overflow-y-auto pr-1" id="mgmtPresetsListContainer">
+          <!-- JS 렌더링 -->
+        </div>
+      </div>
+
+      <!-- 탭 2: 보상 체계 커스텀 섹션 -->
+      <div id="mgmtRewardsView" class="space-y-4 hidden">
+        <div class="flex items-center justify-between">
+          <p class="text-xs text-zinc-400">
+            5가지 요소(N, P, Po, F, D)가 모두 충족되었을 때 해금되는 1·2·3단계 보상 내용을 자유롭게 수정하세요.
+          </p>
+          <button onclick="resetRewardsToDefault()" class="text-[11px] text-zinc-400 hover:text-rose-400 flex items-center gap-1 transition-colors">
+            <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
+            <span>기본 보상으로 초기화</span>
+          </button>
+        </div>
+
+        <div class="space-y-3" id="mgmtRewardsListContainer">
+          <!-- JS 렌더링 -->
+        </div>
+
+        <div class="flex justify-end pt-2">
+          <button onclick="saveCustomRewardsFromInputs()" class="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-indigo-500 hover:opacity-95 text-white font-black text-xs rounded-2xl flex items-center gap-1.5 shadow-lg shadow-amber-950/40 cursor-pointer">
+            <i data-lucide="check" class="w-4 h-4 stroke-[3]"></i>
+            <span>보상 설정 저장 완료</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Supabase 설정 모달 -->
+  <div id="configModal" class="fixed inset-0 bg-black/80 backdrop-blur-xl z-50 flex items-center justify-center p-4 hidden">
+    <div class="apple-glass rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl border border-white/10">
+      <div class="flex items-center justify-between">
+        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+          <i data-lucide="database" class="w-4 h-4 text-geminiCyan"></i>
+          Supabase 연결 설정
+        </h3>
+        <button onclick="closeConfigModal()" class="text-zinc-500 hover:text-zinc-300">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-zinc-400 leading-relaxed">
+        Supabase URL과 Key를 입력하면 클라우드에 자동 동기화되며, 비워두셔도 브라우저 LocalStorage로 완벽히 동작합니다.
+      </p>
+
+      <div class="space-y-3">
+        <div>
+          <label class="text-[11px] text-zinc-400 block mb-1">Project URL</label>
+          <input id="sbUrlInput" type="text" placeholder="https://your-id.supabase.co" class="w-full bg-black/50 border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400">
+        </div>
+        <div>
+          <label class="text-[11px] text-zinc-400 block mb-1">Anon Public Key</label>
+          <input id="sbKeyInput" type="password" placeholder="eyJhbGciOiJIUzI1Ni..." class="w-full bg-black/50 border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400">
+        </div>
+      </div>
+
+      <div class="pt-2 flex justify-between items-center">
+        <button onclick="copySqlSchema()" class="text-xs text-zinc-400 hover:text-cyan-300 flex items-center gap-1">
+          <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+          <span>SQL 스키마 복사</span>
+        </button>
+        <button onclick="saveSupabaseConfig()" class="bg-gradient-to-r from-cyan-500 to-indigo-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all">
+          설정 저장
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================
+       1. 초기 기본 데이터베이스 (20선 & 기본 3단계 보상)
+       ========================================================= */
+    const DEFAULT_PRESETS = {
+      NEW: [
+        "새 카페 하나 가기",
+        "평소 안 가던 동네/거리 걷기",
+        "새로운 운동 루틴 하나 시도",
+        "디자인에서 새로운 툴/효과 하나 써보기",
+        "관심 있는 분야의 새로운 강의 20분 듣기",
+        "평소 안 듣던 음악 장르 하나 듣기",
+        "새로운 음식/메뉴 먹기",
+        "새로운 사람에게 먼저 인사/질문하기",
+        "새로운 커뮤니티/모임 하나 탐색하기",
+        "“이번 주에 처음 해보는 것” 하나 만들기",
+        "안 써보던 폰트나 색상 팔레트 프로젝트에 적용하기",
+        "서점이나 도서관 가서 무작위 책 한 권 15분 읽기",
+        "평소와 다른 이동 수단이나 낯선 골목으로 귀가하기",
+        "새로운 생산성 단축키 3개 익히고 실전에 바로 써보기",
+        "새로운 앱이나 AI 툴 설치 후 10분간 테스트하기",
+        "책상 배치나 작업 공간의 모니터/조명 환경 바꿔보기",
+        "새로운 팟캐스트/오디오북 1개 에피소드 완청하기",
+        "사진/영상 촬영 구도를 평소와 전혀 다르게 3장 찍어보기",
+        "평소 안 마시던 차나 블렌딩 음료 주문해 마시기",
+        "처음 보는 해외 크리에이터 작업물 1편 정밀 분석하기"
+      ],
+      PEOPLE: [
+        "주 1회 새로운 모임 참여 (운동/디자인/스터디)",
+        "기존 친구에게 먼저 연락 (“이번 주 언제 시간 돼?”)",
+        "자주 가는 카페/운동 장소에서 먼저 인사하기",
+        "관심 분야 실력자에게 DM/질문 하나 남기기",
+        "오프라인 행사(전시/세미나/밋업) 1곳 탐색 및 신청",
+        "친구의 친구를 함께 만나는 자리 만들기",
+        "같이 작업하는 사람 만들기 (“1시간 후 결과 공유”)",
+        "새로운 사람에게 먼저 커피챗 제안하기",
+        "기존 관계에서 서로의 목표/고민 진솔하게 나누기",
+        "연애/교류 가능성 있는 건전한 오프라인 모임 참석",
+        "SNS에서 멋진 작업물 올린 사람에게 진심 어린 피드백 댓글 남기기",
+        "동료나 스터디원에게 유용한 최신 아티클 먼저 전달하기",
+        "지인에게 안부 연락하며 최근 진행 중인 프로젝트 물어보기",
+        "모임이나 대화 자리에서 상대방 이야기 80% 경청하기",
+        "업계 현업자 모임이나 오픈채팅방에 가입하고 첫 질문 던지기",
+        "함께 식사나 야외 러닝할 약속 먼저 주도해서 잡기",
+        "고마웠던 사람에게 구체적인 이유 담아 감사 톡 보내기",
+        "서로 작업 화면 공유하며 모각작(모여서 각자 작업) 제안하기",
+        "관심사 공유하는 온라인 챌린지에 참여자들과 댓글로 소통하기",
+        "새로운 사람과의 대화에서 공통 관심사 2가지 찾아내기"
+      ],
+      POSSIBILITY: [
+        "새로운 돈벌이 아이디어 하나 실제 테스트 (글/상품/서비스)",
+        "새로운 콘텐츠(글/이미지) 하나 세상에 공개하기",
+        "새로운 사람/인플루언서에게 협업 및 문의 메일 보내기",
+        "새로운 협업 제안서 1장 작성 후 전달하기",
+        "새로운 프로젝트 저장소/문서 만들고 첫 발 딛기",
+        "자격증/교육 과정 조사 후 실제로 접수하기",
+        "새로운 1페이지 포트폴리오 작업물 제작하기",
+        "내가 만든 작은 결과물을 커뮤니티에 공유하기",
+        "새로운 운동 기록 목표(PR) 갱신 시도하기",
+        "“한 달 뒤 어떻게 될지 모르는 일” 1개 던져놓기",
+        "유료 플랫폼이나 스토어에 미니 디지털 파일 올려보기",
+        "평소 궁금했던 스타트업/기업에 커피챗이나 문의 요청하기",
+        "새로운 비즈니스 기획안을 노션 1페이지로 뼈대 잡기",
+        "새로운 파이프라인/자동화 워크플로우 1개 구축해보기",
+        "공모전이나 지원 사업 요강 분석하고 지원서 작성 시작하기",
+        "인스타그램/유튜브에 테스트용 숏폼 1편 제작해보기",
+        "커뮤니티에 질문 글 올리고 시장 니즈 테스트하기",
+        "내가 가진 지식을 정리한 무료 노하우 PDF 2페이지 만들기",
+        "평소 시도해보지 않은 고난도 기능 코드/디자인 구현 도전하기",
+        "실패해도 잃을 것 없는 가벼운 제안 메시지 3명에게 보내기"
+      ],
+      FEEDBACK: [
+        "디자인/작업물 시안 완성 → 친구/지인에게 즉시 보여주기",
+        "웹사이트 프로토타입 → 누군가 실제로 1분 사용하게 하기",
+        "짧은 생각이나 인사이트 → X(트위터)에 올려보기",
+        "짧은 영상 클립 → 숏폼/SNS에 업로드하기",
+        "창작물/아이디어 음원 → 지인에게 들려주기",
+        "오늘 공부한 핵심 개념 → 누군가에게 설명해보기",
+        "오늘의 운동 기록 → 인증 사진/수치 기록 남기기",
+        "포트폴리오 초안 → 현업자/커뮤니티에 피드백 요청",
+        "사업/서비스 아이디어 → 실제 타겟 고객 1명에게 질문",
+        "새로 배운 기술로 미니 결과물 만들어 공개하기",
+        "작업 결과물 캡처해서 단톡방에 올리고 의견 묻기",
+        "고객이나 사용자 1명에게 사용성 솔직한 후기 듣기",
+        "블로그나 미디엄에 오늘 배운 점 기술 정리 글 배포",
+        "완성률 60% 상태에서 빠르게 첫 피드백 받아보기",
+        "오픈채팅방이나 포럼에 작업물 올리고 평가받기",
+        "지인에게 “이 콘텐츠/사이트 직관적으로 이해돼?” 물어보기",
+        "AI 툴에게 내 작업물과 논리 구조 비판적으로 리뷰받기",
+        "오늘 달성한 작업 분량을 인증 채널에 공유하기",
+        "서로 피드백 교환할 파트너 1명 지정해서 상호 리뷰하기",
+        "내 아이디어의 단점 3가지를 다른 사람에게 지적받아보기"
+      ],
+      DEADLINE: [
+        "친구에게 약속 걸기 (“금요일까지 이거 완성해서 보여줄게”)",
+        "공개 날짜 먼저 공표하기 (“일요일 저녁 업로드”)",
+        "돈 걸기 (못 지키면 친구에게 커피/치킨 사기)",
+        "수업/시험 결제부터 해버려 자동 마감 발생시키기",
+        "사람과 약속 일정 잡기 (“토요일에 결과물 가져갈게”)",
+        "작업물 발표/공유 일정 캘린더에 못 박기",
+        "대회/공모전/지원 마감일에 맞춰 제출 등록",
+        "운동 기록 목표 날짜 부여 (“30일 뒤 측정”)",
+        "친구와 마감 경쟁 (“누가 먼저 끝내나 커피 내기”)",
+        "오늘 밤 11시 59분까지 최소 결과물 1개 완성하기",
+        "타이머 45분 맞추고 알람 울릴 때까지 자리 안 뜨기",
+        "오늘 퇴근/취침 1시간 전까지 결과물 무조건 링크 생성하기",
+        "다음 주 월요일 오전 9시까지 공유 캘린더에 일정 등록",
+        "“오늘 이거 못 끝내면 운동 2배 하기” 벌칙 설정",
+        "지인에게 보증금 1만 원 맡기고 완수 시 돌려받기",
+        "라이브 방송이나 화면 공유 켜놓고 1시간 집중 작업",
+        "스터디 마감 30분 전까지 구글 폼에 제출 완료하기",
+        "오늘 오후 6시 전까지 초안 무조건 전송하기",
+        "내일 아침 기상 직후 검토할 수 있도록 오늘 밤 파일 저장",
+        "자정까지 완성된 결과물 링크 SNS에 자동 예약 걸기"
+      ]
+    };
+
+    const DEFAULT_REWARDS = [
+      { tier: 1, req: 1, title: "1단계 보상", text: "ㅈㅇ 가능", desc: "5가지 항목 모두 최소 1개 이상 완료 시 해금" },
+      { tier: 2, req: 2, title: "2단계 보상", text: "X 가능, 답장 가능, 구인 가능, 온플 가능", desc: "5가지 항목 모두 최소 2개 이상 완료 시 해금" },
+      { tier: 3, req: 3, title: "3단계 보상", text: "배달음식 가능", desc: "5가지 항목 모두 최소 3개 이상 완료 시 해금" }
+    ];
+
+    const META = {
+      NEW: { label: 'NEW', color: 'text-cyan-300 border-cyan-400/30 bg-cyan-500/10' },
+      PEOPLE: { label: 'PEOPLE', color: 'text-emerald-300 border-emerald-400/30 bg-emerald-500/10' },
+      POSSIBILITY: { label: 'POSSIBILITY', color: 'text-amber-300 border-amber-400/30 bg-amber-500/10' },
+      FEEDBACK: { label: 'FEEDBACK', color: 'text-purple-300 border-purple-400/30 bg-purple-500/10' },
+      DEADLINE: { label: 'DEADLINE', color: 'text-rose-300 border-rose-400/30 bg-rose-500/10' }
+    };
+
+    /* =========================================================
+       2. 상태 관리 (State)
+       ========================================================= */
+    let currentPresets = JSON.parse(JSON.stringify(DEFAULT_PRESETS));
+    let currentRewards = JSON.parse(JSON.stringify(DEFAULT_REWARDS));
+
+    function getTodayStr() {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function formatDateDisplay(dateStr) {
+      const [y, m, d] = dateStr.split('-').map(Number);
+      const dt = new Date(y, m - 1, d);
+      const days = ['일', '월', '화', '수', '목', '금', '토'];
+      return `${y}. ${m}. ${d} (${days[dt.getDay()]})`;
+    }
+
+    let activeDate = getTodayStr();
+    let calYear = new Date().getFullYear();
+    let calMonth = new Date().getMonth();
+
+    let primingRecords = {};
+    let showerTimerInterval = null;
+    let showerSecondsLeft = 300;
+    let isShowerTimerRunning = false;
+
+    let quests = [];
+    let sparks = [];
+    let supabaseClient = null;
+
+    // REAL X 기본 Supabase 연결값 (publishable key는 브라우저 공개용 키)
+    const REAL_X_SUPABASE_URL = 'https://vmmhjbgkljoohfnlhqzg.supabase.co';
+    const REAL_X_SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_nx63grfA-MAACWfxjO6gQQ_RixcVgOz';
+
+    /* =========================================================
+       3. Audio & Confetti
+       ========================================================= */
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playSfx(type) {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      const now = audioCtx.currentTime;
+
+      if (type === 'pop') {
+        osc.frequency.setValueAtTime(420, now);
+        osc.frequency.exponentialRampToValueAtTime(840, now + 0.08);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.linearRampToValueAtTime(0, now + 0.08);
+        osc.start(now);
+        osc.stop(now + 0.08);
+      } else if (type === 'complete') {
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(523.25, now);
+        osc.frequency.setValueAtTime(659.25, now + 0.07);
+        osc.frequency.setValueAtTime(783.99, now + 0.14);
+        osc.frequency.setValueAtTime(1046.50, now + 0.21);
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.linearRampToValueAtTime(0, now + 0.35);
+        osc.start(now);
+        osc.stop(now + 0.35);
+      } else if (type === 'fanfare') {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(440, now);
+        osc.frequency.exponentialRampToValueAtTime(880, now + 0.25);
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.linearRampToValueAtTime(0, now + 0.3);
+        osc.start(now);
+        osc.stop(now + 0.3);
+      }
+    }
+
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function triggerConfetti(x, y) {
+      const colors = ['#00F0FF', '#10B981', '#FF3366', '#F59E0B', '#A855F7', '#6366F1'];
+      for (let i = 0; i < 35; i++) {
+        particles.push({
+          x: x || window.innerWidth / 2,
+          y: y || window.innerHeight / 2,
+          vx: (Math.random() - 0.5) * 12,
+          vy: (Math.random() - 0.5) * 12 - 4,
+          size: Math.random() * 5 + 2,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          alpha: 1,
+          decay: Math.random() * 0.03 + 0.02
+        });
+      }
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.25;
+        p.alpha -= p.decay;
+        if (p.alpha <= 0) {
+          particles.splice(i, 1);
+          continue;
+        }
+        ctx.save();
+        ctx.globalAlpha = p.alpha;
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    /* =========================================================
+       4. 데이터 로드 / 저장 & Supabase 동기화
+       ========================================================= */
+    function loadData() {
+      const sQuests = localStorage.getItem('real_x_quests');
+      const sSparks = localStorage.getItem('real_x_sparks');
+      const sPriming = localStorage.getItem('real_x_priming_records');
+      const sPresets = localStorage.getItem('real_x_custom_presets');
+      const sRewards = localStorage.getItem('real_x_custom_rewards');
+
+      if (sPresets) currentPresets = JSON.parse(sPresets);
+      if (sRewards) currentRewards = JSON.parse(sRewards);
+
+      if (sQuests) {
+        const raw = JSON.parse(sQuests);
+        quests = raw.map(q => {
+          if (!q.categories) q.categories = q.category ? [q.category] : ['NEW'];
+          return q;
+        });
+      } else {
+        const today = getTodayStr();
+        quests = [
+          { id: '1', date: today, categories: ['NEW', 'FEEDBACK'], title: '새 카페 가서 작업하고 친구에게 시안 공유하기', feedback_desc: '디자인 시안 지인 피드백 받기', deadline_desc: '', is_completed: false, proof_note: '', created_at: Date.now() },
+          { id: '2', date: today, categories: ['PEOPLE'], title: '기존 친구에게 먼저 연락 (“이번 주 언제 시간 돼?”)', feedback_desc: '', deadline_desc: '', is_completed: false, proof_note: '', created_at: Date.now() },
+          { id: '3', date: today, categories: ['POSSIBILITY', 'DEADLINE'], title: '협업 제안서 1장 작성 후 전달', feedback_desc: '', deadline_desc: '오늘 밤 11시까지 발송', is_completed: false, proof_note: '', created_at: Date.now() }
+        ];
+      }
+
+      if (sSparks) sparks = JSON.parse(sSparks);
+      if (sPriming) primingRecords = JSON.parse(sPriming);
+
+      initSupabase();
+      initPlanBuilderPresets();
+      renderAll();
+    }
+
+    function saveData() {
+      localStorage.setItem('real_x_quests', JSON.stringify(quests));
+      localStorage.setItem('real_x_sparks', JSON.stringify(sparks));
+      localStorage.setItem('real_x_priming_records', JSON.stringify(primingRecords));
+      localStorage.setItem('real_x_custom_presets', JSON.stringify(currentPresets));
+      localStorage.setItem('real_x_custom_rewards', JSON.stringify(currentRewards));
+
+      if (supabaseClient) syncToSupabase();
+    }
+
+    function initSupabase() {
+      // 사용자가 별도 설정을 저장하지 않았으면 이 파일에 포함된 프로젝트로 자동 연결
+      if (!localStorage.getItem('real_x_sb_url')) localStorage.setItem('real_x_sb_url', REAL_X_SUPABASE_URL);
+      if (!localStorage.getItem('real_x_sb_key')) localStorage.setItem('real_x_sb_key', REAL_X_SUPABASE_PUBLISHABLE_KEY);
+      const url = localStorage.getItem('real_x_sb_url') || REAL_X_SUPABASE_URL;
+      const key = localStorage.getItem('real_x_sb_key') || REAL_X_SUPABASE_PUBLISHABLE_KEY;
+      const dbLabel = document.getElementById('dbStatusLabel');
+
+      if (url && key && window.supabase) {
+        try {
+          supabaseClient = window.supabase.createClient(url, key);
+          dbLabel.textContent = 'Supabase 설정됨';
+          dbLabel.className = 'text-emerald-600 font-bold';
+          // 테이블/RLS까지 확인해 실제 연결 상태를 표시
+          supabaseClient.from('daily_quests').select('id').limit(1).then(({ error }) => {
+            if (error) {
+              console.warn('Supabase table/RLS setup required:', error.message);
+              dbLabel.textContent = 'Supabase 설정 필요';
+              dbLabel.className = 'text-amber-600 font-bold';
+            } else {
+              dbLabel.textContent = 'Supabase 연결됨';
+              dbLabel.className = 'text-emerald-600 font-bold';
+            }
+          }).catch((e) => {
+            console.warn('Supabase connection check failed:', e);
+            dbLabel.textContent = '연결 확인 필요';
+            dbLabel.className = 'text-amber-600 font-bold';
+          });
+        } catch (e) {
+          console.error(e);
+          supabaseClient = null;
+          dbLabel.textContent = '연결 오류';
+          dbLabel.className = 'text-red-600 font-bold';
+        }
+      } else {
+        supabaseClient = null;
+        dbLabel.textContent = '로컬 모드';
+        dbLabel.className = 'text-zinc-500';
+      }
+    }
+
+    async function syncToSupabase() {
+      if (!supabaseClient) return;
+      try {
+        const payload = quests.map(q => ({
+          id: String(q.id),
+          date_str: q.date,
+          categories: q.categories,
+          title: q.title,
+          feedback_desc: q.feedback_desc || null,
+          deadline_desc: q.deadline_desc || null,
+          is_completed: !!q.is_completed,
+          proof_note: q.proof_note || ''
+        }));
+        if (payload.length) {
+          const { error } = await supabaseClient.from('daily_quests').upsert(payload, { onConflict: 'id' });
+          if (error) throw error;
+        }
+        if (sparks.length) {
+          const sparkPayload = sparks.map(s => ({
+            id: String(s.id),
+            idea_text: s.idea_text || '',
+            immediate_action: s.immediate_action || ''
+          }));
+          const { error } = await supabaseClient.from('spark_actions').upsert(sparkPayload, { onConflict: 'id' });
+          if (error) throw error;
+        }
+      } catch (err) {
+        console.warn('Supabase sync warning:', err);
+        const dbLabel = document.getElementById('dbStatusLabel');
+        if (dbLabel) {
+          dbLabel.textContent = '동기화 오류';
+          dbLabel.className = 'text-red-600 font-bold';
+        }
+      }
+    }
+
+    /* =========================================================
+       5. 월간 캘린더 렌더링
+       ========================================================= */
+    function changeCalMonth(offset) {
+      calMonth += offset;
+      if (calMonth < 0) {
+        calMonth = 11;
+        calYear--;
+      } else if (calMonth > 11) {
+        calMonth = 0;
+        calYear++;
+      }
+      renderCalendar();
+    }
+
+    function renderCalendar() {
+      document.getElementById('calendarMonthTitle').textContent = `${calYear}년 ${calMonth + 1}월`;
+      const grid = document.getElementById('calendarGrid');
+      grid.innerHTML = '';
+
+      const firstDay = new Date(calYear, calMonth, 1).getDay();
+      const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+      const todayStr = getTodayStr();
+
+      for (let i = 0; i < firstDay; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = "min-h-[105px] rounded-2xl bg-white/[0.01] border border-transparent";
+        grid.appendChild(emptyCell);
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const isToday = dateStr === todayStr;
+        const isSelected = dateStr === activeDate;
+
+        const dayQuests = quests.filter(q => q.date === dateStr);
+        const dayCompleted = dayQuests.filter(q => q.is_completed);
+
+        const counts = { NEW: 0, PEOPLE: 0, POSSIBILITY: 0, FEEDBACK: 0, DEADLINE: 0 };
+        dayCompleted.forEach(q => {
+          (q.categories || [q.category]).forEach(c => {
+            if (counts[c] !== undefined) counts[c]++;
+          });
+        });
+
+        const totalCompleted = dayCompleted.length;
+
+        const cell = document.createElement('div');
+        cell.className = `min-h-[105px] p-2.5 rounded-2xl border flex flex-col justify-between transition-all cursor-pointer ${
+          isSelected 
+            ? 'bg-cyan-500/10 border-cyan-400/80 shadow-lg shadow-cyan-950/40 ring-1 ring-cyan-400' 
+            : isToday 
+              ? 'bg-indigo-500/10 border-indigo-400/40 hover:border-indigo-400' 
+              : 'apple-glass-card hover:bg-white/[0.06]'
+        }`;
+
+        cell.onclick = () => {
+          setActiveDate(dateStr);
+          playSfx('pop');
+        };
+
+        let topHtml = `
+          <div class="flex items-center justify-between pb-1 border-b border-white/[0.06]">
+            <span class="text-xs font-bold ${isToday ? 'text-cyan-300 font-black' : isSelected ? 'text-white' : 'text-zinc-400'}">
+              ${day}일
+            </span>
+            ${totalCompleted > 0 ? `
+              <span class="text-[10px] font-black px-1.5 py-0.2 rounded-full bg-cyan-400/20 text-cyan-300">
+                +${totalCompleted}
+              </span>
+            ` : '<span class="text-[9px] text-zinc-600 font-medium">0</span>'}
+          </div>
+        `;
+
+        let bodyHtml = `
+          <div class="grid grid-cols-1 gap-0.5 mt-1 text-[10px]">
+            <div class="flex items-center justify-between px-1.5 py-0.2 rounded ${counts.NEW > 0 ? 'bg-cyan-500/20 text-cyan-300 font-bold' : 'text-zinc-600'}">
+              <span>NEW</span><span>${counts.NEW}</span>
+            </div>
+            <div class="flex items-center justify-between px-1.5 py-0.2 rounded ${counts.PEOPLE > 0 ? 'bg-emerald-500/20 text-emerald-300 font-bold' : 'text-zinc-600'}">
+              <span>PEOPLE</span><span>${counts.PEOPLE}</span>
+            </div>
+            <div class="flex items-center justify-between px-1.5 py-0.2 rounded ${counts.POSSIBILITY > 0 ? 'bg-amber-500/20 text-amber-300 font-bold' : 'text-zinc-600'}">
+              <span>POSS</span><span>${counts.POSSIBILITY}</span>
+            </div>
+            <div class="flex items-center justify-between px-1.5 py-0.2 rounded ${counts.FEEDBACK > 0 ? 'bg-purple-500/20 text-purple-300 font-bold' : 'text-zinc-600'}">
+              <span>FEED</span><span>${counts.FEEDBACK}</span>
+            </div>
+            <div class="flex items-center justify-between px-1.5 py-0.2 rounded ${counts.DEADLINE > 0 ? 'bg-rose-500/20 text-rose-300 font-bold' : 'text-zinc-600'}">
+              <span>DEAD</span><span>${counts.DEADLINE}</span>
+            </div>
+          </div>
+        `;
+
+        cell.innerHTML = topHtml + bodyHtml;
+        grid.appendChild(cell);
+      }
+    }
+
+    function setActiveDate(dateStr) {
+      activeDate = dateStr;
+      const todayStr = getTodayStr();
+
+      document.getElementById('activeDateDisplay').textContent = formatDateDisplay(dateStr);
+      const badge = document.getElementById('activeDateBadge');
+
+      if (dateStr === todayStr) {
+        badge.textContent = '오늘 (TODAY)';
+        badge.className = 'text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-cyan-950/80 text-cyan-300 border border-cyan-800/40';
+      } else {
+        badge.textContent = '선택 날짜';
+        badge.className = 'text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-white/[0.04] text-zinc-400 border border-white/[0.08]';
+      }
+
+      document.getElementById('modalTargetDateLabel').textContent = formatDateDisplay(dateStr);
+
+      const [y, m] = dateStr.split('-').map(Number);
+      calYear = y;
+      calMonth = m - 1;
+
+      renderAll();
+      renderCalendar();
+    }
+
+    function offsetActiveDate(offsetDays) {
+      const [y, m, d] = activeDate.split('-').map(Number);
+      const dt = new Date(y, m - 1, d);
+      dt.setDate(dt.getDate() + offsetDays);
+      const nextDateStr = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`;
+      setActiveDate(nextDateStr);
+      playSfx('pop');
+    }
+
+    /* =========================================================
+       6. STATE PRIMING
+       ========================================================= */
+    function getActivePriming() {
+      if (!primingRecords[activeDate]) {
+        primingRecords[activeDate] = {
+          mode: 'workout',
+          workoutStep: 0,
+          showerCompleted: false
+        };
+      }
+      return primingRecords[activeDate];
+    }
+
+    function isCurrentPrimed() {
+      const p = getActivePriming();
+      return p.workoutStep >= 3 || p.showerCompleted === true;
+    }
+
+    function switchPrimeMode(mode) {
+      const p = getActivePriming();
+      p.mode = mode;
+      saveData();
+      renderPriming();
+    }
+
+    function toggleWorkoutPriming(step) {
+      const p = getActivePriming();
+      p.workoutStep = (p.workoutStep === step) ? step - 1 : step;
+      playSfx('pop');
+      if (p.workoutStep >= 3) {
+        playSfx('fanfare');
+        triggerConfetti();
+      }
+      saveData();
+      renderAll();
+    }
+
+    function toggleShowerComplete() {
+      const p = getActivePriming();
+      p.showerCompleted = !p.showerCompleted;
+      playSfx(p.showerCompleted ? 'complete' : 'pop');
+      if (p.showerCompleted) triggerConfetti();
+      saveData();
+      renderAll();
+    }
+
+    function toggleShowerTimer() {
+      const icon = document.getElementById('showerTimerIcon');
+      if (isShowerTimerRunning) {
+        clearInterval(showerTimerInterval);
+        isShowerTimerRunning = false;
+        icon.setAttribute('data-lucide', 'play');
+      } else {
+        isShowerTimerRunning = true;
+        icon.setAttribute('data-lucide', 'pause');
+        showerTimerInterval = setInterval(() => {
+          showerSecondsLeft--;
+          if (showerSecondsLeft <= 0) {
+            clearInterval(showerTimerInterval);
+            isShowerTimerRunning = false;
+            showerSecondsLeft = 300;
+            const p = getActivePriming();
+            p.showerCompleted = true;
+            playSfx('fanfare');
+            triggerConfetti();
+            saveData();
+            renderAll();
+          }
+          renderShowerTimerText();
+        }, 1000);
+      }
+      lucide.createIcons();
+    }
+
+    function renderShowerTimerText() {
+      const m = Math.floor(showerSecondsLeft / 60);
+      const s = showerSecondsLeft % 60;
+      document.getElementById('showerTimerText').textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function renderPriming() {
+      const p = getActivePriming();
+      const primed = isCurrentPrimed();
+
+      const card = document.getElementById('primingCard');
+      const icon = document.getElementById('primingIcon');
+      const badge = document.getElementById('primingBadge');
+      const lockOverlay = document.getElementById('planLockOverlay');
+
+      if (primed) {
+        card.className = "border rounded-2xl p-4 sm:p-5 transition-all bg-emerald-950/20 border-emerald-500/40 shadow-lg shadow-emerald-950/30";
+        icon.className = "w-4 h-4 text-emerald-400";
+        icon.setAttribute('data-lucide', 'unlock');
+        badge.className = "text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-emerald-500/20 text-emerald-300";
+        badge.textContent = "⚡ PRIMED (신체 각성 완료 • 플랜 등록 가능)";
+        if (lockOverlay) lockOverlay.classList.add('hidden');
+      } else {
+        card.className = "border rounded-2xl p-4 sm:p-5 transition-all bg-[#140f13] border-rose-500/30 shadow-lg";
+        icon.className = "w-4 h-4 text-rose-500";
+        icon.setAttribute('data-lucide', 'lock');
+        badge.className = "text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-rose-500/20 text-rose-400";
+        badge.textContent = "신체 각성 필수 (완료 전 플랜 잠김)";
+        if (lockOverlay) lockOverlay.classList.remove('hidden');
+      }
+
+      const tabWorkout = document.getElementById('primeTabWorkout');
+      const tabShower = document.getElementById('primeTabShower');
+      const viewWorkout = document.getElementById('workoutPrimeView');
+      const viewShower = document.getElementById('showerPrimeView');
+
+      if (p.mode === 'shower') {
+        tabShower.className = "px-3 py-1 rounded-xl text-xs font-bold border border-cyan-500/40 bg-cyan-500/10 text-cyan-300 flex items-center gap-1.5 transition-all";
+        tabWorkout.className = "px-3 py-1 rounded-xl text-xs font-semibold border border-white/[0.08] bg-white/[0.02] text-zinc-400 hover:text-zinc-200 flex items-center gap-1.5 transition-all";
+        viewWorkout.classList.add('hidden');
+        viewShower.classList.remove('hidden');
+      } else {
+        tabWorkout.className = "px-3 py-1 rounded-xl text-xs font-bold border border-cyan-500/40 bg-cyan-500/10 text-cyan-300 flex items-center gap-1.5 transition-all";
+        tabShower.className = "px-3 py-1 rounded-xl text-xs font-semibold border border-white/[0.08] bg-white/[0.02] text-zinc-400 hover:text-zinc-200 flex items-center gap-1.5 transition-all";
+        viewWorkout.classList.remove('hidden');
+        viewShower.classList.add('hidden');
+      }
+
+      for (let i = 1; i <= 3; i++) {
+        const btn = document.getElementById(`primeBtn${i}`);
+        const checked = p.workoutStep >= i;
+        if (checked) {
+          btn.className = "py-2.5 px-3 rounded-2xl border border-emerald-500/50 bg-emerald-500/10 text-xs font-bold flex items-center justify-center gap-1.5 text-emerald-300 transition-all";
+          btn.innerHTML = `<i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400"></i> ${i === 1 ? '1. 운동복 완료' : i === 2 ? '2. 신발 완료' : '3. 헬스장 완료'}`;
+        } else {
+          btn.className = "py-2.5 px-3 rounded-2xl border border-white/[0.08] bg-white/[0.02] text-xs font-semibold flex items-center justify-center gap-1.5 text-zinc-400 transition-all hover:bg-white/[0.05]";
+          btn.innerHTML = `<i data-lucide="circle" class="w-3.5 h-3.5"></i> ${i === 1 ? '1. 운동복 입기' : i === 2 ? '2. 신발 신기' : '3. 헬스장/활주'}`;
+        }
+      }
+
+      const showerBtn = document.getElementById('showerCompleteBtn');
+      const showerLabel = document.getElementById('showerCompleteLabel');
+      if (p.showerCompleted) {
+        showerBtn.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold border border-emerald-500/50 bg-emerald-500/10 text-emerald-300 transition-all flex items-center gap-1";
+        showerLabel.textContent = "찬물샤워 5분 완료됨 ✓";
+      } else {
+        showerBtn.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold border border-cyan-500/40 bg-cyan-500/10 text-cyan-300 hover:bg-cyan-500/20 transition-all flex items-center gap-1";
+        showerLabel.textContent = "찬물샤워 5분 완료";
+      }
+
+      renderShowerTimerText();
+    }
+
+    /* =========================================================
+       7. 플랜 빌더 (동적 프리셋 연동)
+       ========================================================= */
+    function initPlanBuilderPresets() {
+      onActionCategoryChange();
+
+      const fbSelect = document.getElementById('feedbackPresetSelect');
+      fbSelect.innerHTML = '<option value="">-- 피드백 선택 --</option>' +
+        currentPresets.FEEDBACK.map((item, idx) => `<option value="${item}">${idx + 1}. ${item}</option>`).join('');
+
+      const deadSelect = document.getElementById('deadPresetSelect');
+      deadSelect.innerHTML = '<option value="">-- 마감 선택 --</option>' +
+        currentPresets.DEADLINE.map((item, idx) => `<option value="${item}">${idx + 1}. ${item}</option>`).join('');
+    }
+
+    function onActionCategoryChange() {
+      const cat = document.getElementById('actionCategorySelect').value;
+      const list = currentPresets[cat] || [];
+      const actSelect = document.getElementById('actionPresetSelect');
+      actSelect.innerHTML = '<option value="">-- 행동 선택 --</option>' +
+        list.map((item, idx) => `<option value="${item}">${idx + 1}. ${item}</option>`).join('');
+    }
+
+    function onActionPresetSelect() {
+      const val = document.getElementById('actionPresetSelect').value;
+      if (val) document.getElementById('actionTitleInput').value = val;
+    }
+
+    function toggleFeedbackPanel() {
+      const chk = document.getElementById('feedbackEnableCheckbox');
+      const panel = document.getElementById('feedbackPanel');
+      const badge = document.getElementById('feedbackStateBadge');
+
+      if (chk.checked) {
+        panel.className = "bg-purple-950/20 border border-purple-500/40 rounded-2xl p-3.5 space-y-2 transition-all";
+        badge.textContent = "④ 결합됨";
+        badge.className = "text-[10px] text-purple-300 font-bold";
+      } else {
+        panel.className = "bg-black/30 border border-white/[0.08] rounded-2xl p-3.5 space-y-2 transition-all opacity-80";
+        badge.textContent = "선택 안 함";
+        badge.className = "text-[10px] text-zinc-500";
+      }
+    }
+
+    function onFeedbackPresetSelect() {
+      const val = document.getElementById('feedbackPresetSelect').value;
+      if (val) {
+        document.getElementById('feedbackDescInput').value = val;
+        document.getElementById('feedbackEnableCheckbox').checked = true;
+        toggleFeedbackPanel();
+      }
+    }
+
+    function onFeedbackInputTyped() {
+      const val = document.getElementById('feedbackDescInput').value.trim();
+      const chk = document.getElementById('feedbackEnableCheckbox');
+      if (val && !chk.checked) {
+        chk.checked = true;
+        toggleFeedbackPanel();
+      }
+    }
+
+    function toggleDeadPanel() {
+      const chk = document.getElementById('deadEnableCheckbox');
+      const panel = document.getElementById('deadPanel');
+      const badge = document.getElementById('deadStateBadge');
+
+      if (chk.checked) {
+        panel.className = "bg-rose-950/20 border border-rose-500/40 rounded-2xl p-3.5 space-y-2 transition-all";
+        badge.textContent = "⑤ 결합됨";
+        badge.className = "text-[10px] text-rose-300 font-bold";
+      } else {
+        panel.className = "bg-black/30 border border-white/[0.08] rounded-2xl p-3.5 space-y-2 transition-all opacity-80";
+        badge.textContent = "선택 안 함";
+        badge.className = "text-[10px] text-zinc-500";
+      }
+    }
+
+    function onDeadPresetSelect() {
+      const val = document.getElementById('deadPresetSelect').value;
+      if (val) {
+        document.getElementById('deadDescInput').value = val;
+        document.getElementById('deadEnableCheckbox').checked = true;
+        toggleDeadPanel();
+      }
+    }
+
+    function onDeadInputTyped() {
+      const val = document.getElementById('deadDescInput').value.trim();
+      const chk = document.getElementById('deadEnableCheckbox');
+      if (val && !chk.checked) {
+        chk.checked = true;
+        toggleDeadPanel();
+      }
+    }
+
+    function generateFullRandomQuest() {
+      if (!isCurrentPrimed()) {
+        alert('신체 각성(STATE PRIMING)을 먼저 완료해야 플랜을 등록할 수 있습니다!');
+        return;
+      }
+
+      const actionCategories = ['NEW', 'PEOPLE', 'POSSIBILITY'];
+      const chosenActionCat = actionCategories[Math.floor(Math.random() * actionCategories.length)];
+      const chosenActionList = currentPresets[chosenActionCat];
+      if (!chosenActionList || chosenActionList.length === 0) {
+        alert('해당 카테고리에 선택지가 없습니다. 커스텀 관리에서 추가해주세요.');
+        return;
+      }
+      const chosenActionTitle = chosenActionList[Math.floor(Math.random() * chosenActionList.length)];
+
+      const includeFeedback = Math.random() < 0.5 && currentPresets.FEEDBACK.length > 0;
+      const chosenFeedback = includeFeedback 
+        ? currentPresets.FEEDBACK[Math.floor(Math.random() * currentPresets.FEEDBACK.length)] 
+        : '';
+
+      const includeDeadline = Math.random() < 0.5 && currentPresets.DEADLINE.length > 0;
+      const chosenDeadline = includeDeadline 
+        ? currentPresets.DEADLINE[Math.floor(Math.random() * currentPresets.DEADLINE.length)] 
+        : '';
+
+      const selectedCategories = [chosenActionCat];
+      if (includeFeedback) selectedCategories.push('FEEDBACK');
+      if (includeDeadline) selectedCategories.push('DEADLINE');
+
+      const newQuest = {
+        id: Date.now().toString(),
+        date: activeDate,
+        categories: selectedCategories,
+        title: chosenActionTitle,
+        feedback_desc: chosenFeedback,
+        deadline_desc: chosenDeadline,
+        is_completed: false,
+        proof_note: '',
+        created_at: Date.now()
+      };
+
+      quests.unshift(newQuest);
+
+      playSfx('fanfare');
+      triggerConfetti();
+      saveData();
+      renderAll();
+      renderCalendar();
+      closeAddModal();
+    }
+
+    function addCustomQuest() {
+      if (!isCurrentPrimed()) {
+        alert('신체 각성(STATE PRIMING)을 먼저 완료해야 플랜을 등록할 수 있습니다!');
+        return;
+      }
+
+      const actionTitle = document.getElementById('actionTitleInput').value.trim();
+      const actionCat = document.getElementById('actionCategorySelect').value;
+
+      if (!actionTitle) {
+        alert('카테고리 1 (핵심 행동) 내용을 입력해주세요!');
+        return;
+      }
+
+      const fbChecked = document.getElementById('feedbackEnableCheckbox').checked;
+      const fbDesc = document.getElementById('feedbackDescInput').value.trim();
+
+      const deadChecked = document.getElementById('deadEnableCheckbox').checked;
+      const deadDesc = document.getElementById('deadDescInput').value.trim();
+
+      const selectedCategories = [actionCat];
+      if (fbChecked) selectedCategories.push('FEEDBACK');
+      if (deadChecked) selectedCategories.push('DEADLINE');
+
+      const newQuest = {
+        id: Date.now().toString(),
+        date: activeDate,
+        categories: selectedCategories,
+        title: actionTitle,
+        feedback_desc: fbChecked ? fbDesc : '',
+        deadline_desc: deadChecked ? deadDesc : '',
+        is_completed: false,
+        proof_note: '',
+        created_at: Date.now()
+      };
+
+      quests.unshift(newQuest);
+
+      document.getElementById('actionTitleInput').value = '';
+      document.getElementById('actionPresetSelect').value = '';
+      document.getElementById('feedbackDescInput').value = '';
+      document.getElementById('feedbackPresetSelect').value = '';
+      document.getElementById('feedbackEnableCheckbox').checked = false;
+      toggleFeedbackPanel();
+
+      document.getElementById('deadDescInput').value = '';
+      document.getElementById('deadPresetSelect').value = '';
+      document.getElementById('deadEnableCheckbox').checked = false;
+      toggleDeadPanel();
+
+      playSfx('pop');
+      saveData();
+      renderAll();
+      renderCalendar();
+      closeAddModal();
+    }
+
+    function toggleQuest(id, event) {
+      const q = quests.find(item => item.id === id);
+      if (!q) return;
+
+      q.is_completed = !q.is_completed;
+      if (q.is_completed) {
+        playSfx('complete');
+        const rect = event ? event.target.getBoundingClientRect() : null;
+        triggerConfetti(rect ? rect.left + rect.width / 2 : undefined, rect ? rect.top + rect.height / 2 : undefined);
+      } else {
+        playSfx('pop');
+      }
+
+      saveData();
+      renderAll();
+      renderCalendar();
+    }
+
+    function updateProofNote(id, note) {
+      const q = quests.find(item => item.id === id);
+      if (q) {
+        q.proof_note = note;
+        saveData();
+      }
+    }
+
+    function deleteQuest(id) {
+      quests = quests.filter(q => q.id !== id);
+      playSfx('pop');
+      saveData();
+      renderAll();
+      renderCalendar();
+    }
+
+    /* =========================================================
+       8. 보상(REWARD LOCKER) 렌더링 & 해금 판정
+       ========================================================= */
+    function updateRewards(counts) {
+      const cNEW = counts.NEW || 0;
+      const cPEOPLE = counts.PEOPLE || 0;
+      const cPOSS = counts.POSSIBILITY || 0;
+      const cFEED = counts.FEEDBACK || 0;
+      const cDEAD = counts.DEADLINE || 0;
+
+      const minLevel = Math.min(cNEW, cPEOPLE, cPOSS, cFEED, cDEAD);
+
+      const minBadge = document.getElementById('rewardMinLevelBadge');
+      if (minBadge) {
+        minBadge.textContent = `최소 기준치: ${minLevel}`;
+        minBadge.className = minLevel >= 1 
+          ? "text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-cyan-950/80 border border-cyan-500/40 text-cyan-300"
+          : "text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-white/[0.04] border border-white/[0.08] text-zinc-400";
+      }
+
+      const summaryText = document.getElementById('rewardProgressSummary');
+      if (summaryText) {
+        summaryText.textContent = `N:${cNEW} P:${cPEOPLE} Po:${cPOSS} F:${cFEED} D:${cDEAD}`;
+      }
+
+      // 동적 currentRewards에 따라 카드 렌더링
+      const container = document.getElementById('rewardTiersListContainer');
+      if (!container) return;
+
+      container.innerHTML = currentRewards.map(rw => {
+        const isUnlocked = minLevel >= rw.req;
+
+        return `
+          <div class="border rounded-2xl p-3.5 transition-all ${
+            isUnlocked 
+              ? 'bg-gradient-to-r from-emerald-950/30 to-zinc-900/60 border-emerald-500/40 shadow-lg shadow-emerald-950/20' 
+              : 'bg-black/30 border-white/[0.06] opacity-75'
+          }">
+            <div class="flex items-center justify-between mb-1.5">
+              <div class="flex items-center gap-1.5">
+                <span class="text-xs font-bold">${isUnlocked ? '🔓' : '❌'}</span>
+                <span class="text-xs font-bold ${isUnlocked ? 'text-emerald-300' : 'text-zinc-300'}">${rw.title} (모두 +${rw.req})</span>
+              </div>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-lg border ${
+                isUnlocked 
+                  ? 'border-emerald-500/40 bg-emerald-500/20 text-emerald-300' 
+                  : 'border-white/[0.08] bg-black/40 text-rose-400'
+              }">
+                ${isUnlocked ? '해금 완료 ✓' : 'X 잠금 상태'}
+              </span>
+            </div>
+            <div class="text-sm font-black tracking-wide pl-4 ${isUnlocked ? 'text-white' : 'text-zinc-500 line-through decoration-zinc-700'}">
+              ${rw.text}
+            </div>
+            <div class="text-[10px] pl-4 mt-1 ${isUnlocked ? 'text-emerald-400 font-semibold' : 'text-zinc-500'}">
+              ${isUnlocked ? `${rw.title} 조건 충족됨 (5가지 모두 +${rw.req} 달성)` : `5가지 항목 모두 ${rw.req}개 이상 필요 (현재: ${minLevel}/${rw.req})`}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderQuests() {
+      const listEl = document.getElementById('questList');
+      const emptyEl = document.getElementById('emptyQuestState');
+      const filtered = quests.filter(q => q.date === activeDate);
+
+      document.getElementById('questTotalCountBadge').textContent = `${filtered.length}건`;
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = '';
+        emptyEl.classList.remove('hidden');
+        return;
+      }
+
+      emptyEl.classList.add('hidden');
+      listEl.innerHTML = filtered.map(q => {
+        const catList = q.categories || [q.category];
+        const badgesHtml = catList.map(c => {
+          const meta = META[c] || META.NEW;
+          return `
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full border ${meta.color}">
+              ${meta.label}
+            </span>
+          `;
+        }).join('');
+
+        return `
+          <div class="apple-glass-card rounded-2xl p-4 transition-all ${
+            q.is_completed ? 'opacity-65' : ''
+          }">
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex-1 space-y-2">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  ${badgesHtml}
+                </div>
+
+                <div class="text-sm font-semibold tracking-wide ${q.is_completed ? 'line-through text-zinc-500' : 'text-zinc-100'}">
+                  ${q.title}
+                </div>
+
+                ${(q.feedback_desc || q.deadline_desc) ? `
+                  <div class="space-y-1 pt-1 text-xs">
+                    ${q.feedback_desc ? `
+                      <div class="flex items-center gap-1.5 text-purple-300">
+                        <i data-lucide="radio" class="w-3.5 h-3.5 text-purple-400"></i>
+                        <span>피드백: ${q.feedback_desc}</span>
+                      </div>
+                    ` : ''}
+                    ${q.deadline_desc ? `
+                      <div class="flex items-center gap-1.5 text-rose-300">
+                        <i data-lucide="clock" class="w-3.5 h-3.5 text-rose-400"></i>
+                        <span>마감: ${q.deadline_desc}</span>
+                      </div>
+                    ` : ''}
+                  </div>
+                ` : ''}
+              </div>
+
+              <div class="flex items-center gap-2">
+                <button onclick="deleteQuest('${q.id}')" title="삭제" class="p-2 text-zinc-500 hover:text-rose-400 transition-colors">
+                  <i data-lucide="trash-2" class="w-4 h-4"></i>
+                </button>
+                <button onclick="toggleQuest('${q.id}', event)" class="p-2 transition-transform active:scale-90">
+                  ${q.is_completed ? `
+                    <div class="w-7 h-7 rounded-full bg-cyan-400/20 border-2 border-cyan-400 flex items-center justify-center text-cyan-300 shadow-lg shadow-cyan-950/40">
+                      <i data-lucide="check" class="w-4 h-4 stroke-[3]"></i>
+                    </div>
+                  ` : `
+                    <div class="w-7 h-7 rounded-full border-2 border-white/20 hover:border-white/50 bg-white/[0.02] transition-colors"></div>
+                  `}
+                </button>
+              </div>
+            </div>
+
+            <div class="mt-3 pt-2.5 border-t border-white/[0.06] flex items-center gap-2">
+              <i data-lucide="corner-down-right" class="w-3.5 h-3.5 text-zinc-500"></i>
+              <input
+                type="text"
+                placeholder="실행 증거 한 줄 (예: 카페 영수증, 지인 DM 완료, 사이트 배포 등)"
+                value="${q.proof_note || ''}"
+                onchange="updateProofNote('${q.id}', this.value)"
+                class="flex-1 bg-transparent border-0 text-xs text-zinc-300 placeholder-zinc-600 focus:outline-none"
+              />
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    function updateScoreAndCounts() {
+      const activeCompleted = quests.filter(q => q.date === activeDate && q.is_completed);
+
+      const counts = { NEW: 0, PEOPLE: 0, POSSIBILITY: 0, FEEDBACK: 0, DEADLINE: 0 };
+      activeCompleted.forEach(q => {
+        const catList = q.categories || [q.category];
+        catList.forEach(c => {
+          if (counts[c] !== undefined) counts[c]++;
+        });
+      });
+
+      updateRewards(counts);
+    }
+
+    /* =========================================================
+       9. IDEA-ACTION LOCK
+       ========================================================= */
+    function publishSpark() {
+      const idea = document.getElementById('sparkIdeaInput').value.trim();
+      const action = document.getElementById('sparkActionInput').value.trim();
+      const errEl = document.getElementById('sparkErrorMsg');
+
+      if (!idea || !action) {
+        errEl.classList.remove('hidden');
+        return;
+      }
+      errEl.classList.add('hidden');
+
+      const newSpark = {
+        id: Date.now().toString(),
+        idea_text: idea,
+        immediate_action: action,
+        created_at: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
+      };
+
+      sparks.unshift(newSpark);
+      document.getElementById('sparkIdeaInput').value = '';
+      document.getElementById('sparkActionInput').value = '';
+
+      playSfx('fanfare');
+      triggerConfetti();
+
+      saveData();
+      renderSparks();
+    }
+
+    function deleteSpark(id) {
+      sparks = sparks.filter(s => s.id !== id);
+      playSfx('pop');
+      saveData();
+      renderSparks();
+    }
+
+    function renderSparks() {
+      const container = document.getElementById('sparksListContainer');
+      const feed = document.getElementById('sparksFeed');
+
+      if (sparks.length === 0) {
+        container.classList.add('hidden');
+        return;
+      }
+      container.classList.remove('hidden');
+
+      feed.innerHTML = sparks.map(s => `
+        <div class="apple-glass-card rounded-2xl p-3 flex items-center justify-between text-xs group">
+          <div class="space-y-0.5 flex-1 pr-2">
+            <div class="text-zinc-500 line-through decoration-zinc-700">${s.idea_text}</div>
+            <div class="text-cyan-300 font-bold flex items-center gap-1.5">
+              <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-cyan-400 shrink-0"></i>
+              <span>${s.immediate_action}</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            <span class="text-[10px] text-zinc-500">${s.created_at}</span>
+            <button onclick="deleteSpark('${s.id}')" title="스파크 기록 삭제" class="p-1 rounded text-zinc-500 hover:text-rose-400 transition-colors">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    /* =========================================================
+       10. 커스텀 관리 센터 (추천 선택지 & 보상 내용 수정)
+       ========================================================= */
+    const mgmtModal = document.getElementById('mgmtModal');
+
+    function openMgmtModal() {
+      mgmtModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      renderMgmtPresetsList();
+      renderMgmtRewardsList();
+      lucide.createIcons();
+    }
+
+    function closeMgmtModal() {
+      mgmtModal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    mgmtModal.addEventListener('click', (e) => {
+      if (e.target === mgmtModal) closeMgmtModal();
+    });
+
+    function switchMgmtTab(tab) {
+      const presetsBtn = document.getElementById('mgmtTabPresetsBtn');
+      const rewardsBtn = document.getElementById('mgmtTabRewardsBtn');
+      const presetsView = document.getElementById('mgmtPresetsView');
+      const rewardsView = document.getElementById('mgmtRewardsView');
+
+      if (tab === 'presets') {
+        presetsBtn.className = "flex-1 py-2 text-xs font-bold rounded-xl bg-white/10 text-white transition-all flex items-center justify-center gap-1.5";
+        rewardsBtn.className = "flex-1 py-2 text-xs font-semibold rounded-xl text-zinc-400 hover:text-white transition-all flex items-center justify-center gap-1.5";
+        presetsView.classList.remove('hidden');
+        rewardsView.classList.add('hidden');
+      } else {
+        rewardsBtn.className = "flex-1 py-2 text-xs font-bold rounded-xl bg-white/10 text-white transition-all flex items-center justify-center gap-1.5";
+        presetsBtn.className = "flex-1 py-2 text-xs font-semibold rounded-xl text-zinc-400 hover:text-white transition-all flex items-center justify-center gap-1.5";
+        rewardsView.classList.remove('hidden');
+        presetsView.classList.add('hidden');
+      }
+      lucide.createIcons();
+    }
+
+    // 추천 선택지 렌더링 & 추가 & 삭제
+    function renderMgmtPresetsList() {
+      const cat = document.getElementById('mgmtCategorySelect').value;
+      const list = currentPresets[cat] || [];
+      const container = document.getElementById('mgmtPresetsListContainer');
+
+      container.innerHTML = list.map((item, idx) => `
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.02] border border-white/[0.06] text-xs hover:border-white/10 transition-colors">
+          <span class="text-zinc-200 pr-2"><strong class="text-cyan-400 mr-1.5">${idx + 1}.</strong>${item}</span>
+          <button onclick="removePresetItem('${cat}', ${idx})" class="p-1 text-zinc-500 hover:text-rose-400 transition-colors shrink-0" title="선택지 삭제">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function addNewPresetItem() {
+      const cat = document.getElementById('mgmtCategorySelect').value;
+      const input = document.getElementById('newPresetInput');
+      const val = input.value.trim();
+
+      if (!val) {
+        alert('추가할 선택지 내용을 입력하세요.');
+        return;
+      }
+
+      currentPresets[cat].push(val);
+      input.value = '';
+      saveData();
+      renderMgmtPresetsList();
+      initPlanBuilderPresets();
+      playSfx('pop');
+    }
+
+    function removePresetItem(cat, idx) {
+      currentPresets[cat].splice(idx, 1);
+      saveData();
+      renderMgmtPresetsList();
+      initPlanBuilderPresets();
+      playSfx('pop');
+    }
+
+    function resetPresetsToDefault() {
+      if (!confirm('추천 선택지를 초기 20선 기본값으로 복원하시겠습니까?')) return;
+      currentPresets = JSON.parse(JSON.stringify(DEFAULT_PRESETS));
+      saveData();
+      renderMgmtPresetsList();
+      initPlanBuilderPresets();
+      playSfx('complete');
+    }
+
+    // 보상 내용 렌더링 & 수정 & 저장
+    function renderMgmtRewardsList() {
+      const container = document.getElementById('mgmtRewardsListContainer');
+      container.innerHTML = currentRewards.map((rw, idx) => `
+        <div class="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-amber-300">${rw.title}</span>
+            <div class="flex items-center gap-1.5 text-xs text-zinc-400">
+              <span>필요 최소 완료수:</span>
+              <input id="rewardReqInput_${idx}" type="number" min="1" max="99" value="${rw.req}" class="w-14 bg-black/60 border border-white/[0.08] rounded-lg px-2 py-1 text-center text-white focus:outline-none focus:border-cyan-400">
+            </div>
+          </div>
+
+          <div>
+            <label class="text-[10px] text-zinc-400 block mb-1">해금 시 보상 내용</label>
+            <input id="rewardTextInput_${idx}" type="text" value="${rw.text}" class="w-full bg-black/60 border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400">
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function saveCustomRewardsFromInputs() {
+      currentRewards.forEach((rw, idx) => {
+        const textVal = document.getElementById(`rewardTextInput_${idx}`).value.trim();
+        const reqVal = parseInt(document.getElementById(`rewardReqInput_${idx}`).value, 10);
+        if (textVal) rw.text = textVal;
+        if (!isNaN(reqVal) && reqVal > 0) rw.req = reqVal;
+      });
+
+      saveData();
+      updateScoreAndCounts();
+      playSfx('complete');
+      triggerConfetti();
+      alert('보상 체계가 성공적으로 저장되었습니다!');
+    }
+
+    function resetRewardsToDefault() {
+      if (!confirm('보상 설정을 초기 기본값으로 복원하시겠습니까?')) return;
+      currentRewards = JSON.parse(JSON.stringify(DEFAULT_REWARDS));
+      saveData();
+      renderMgmtRewardsList();
+      updateScoreAndCounts();
+      playSfx('complete');
+    }
+
+    /* =========================================================
+       11. 모달 제어 & 전체 초기화
+       ========================================================= */
+    const addModal = document.getElementById('addModal');
+    function openAddModal() {
+      addModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      renderPriming();
+      updateScoreAndCounts();
+      lucide.createIcons();
+    }
+
+    function closeAddModal() {
+      addModal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    addModal.addEventListener('click', (e) => {
+      if (e.target === addModal) closeAddModal();
+    });
+
+    const configModal = document.getElementById('configModal');
+    document.getElementById('openConfigBtn').addEventListener('click', () => {
+      document.getElementById('sbUrlInput').value = localStorage.getItem('real_x_sb_url') || '';
+      document.getElementById('sbKeyInput').value = localStorage.getItem('real_x_sb_key') || '';
+      configModal.classList.remove('hidden');
+    });
+
+    function closeConfigModal() {
+      configModal.classList.add('hidden');
+    }
+
+    function saveSupabaseConfig() {
+      const url = document.getElementById('sbUrlInput').value.trim();
+      const key = document.getElementById('sbKeyInput').value.trim();
+      localStorage.setItem('real_x_sb_url', url);
+      localStorage.setItem('real_x_sb_key', key);
+      closeConfigModal();
+      initSupabase();
+      syncToSupabase();
+    }
+
+    function copySqlSchema() {
+      const sql = `-- REAL X Supabase 스키마
+-- 주의: 아래 anon 정책은 로그인 없는 개인 테스트용이며 테이블 데이터를 인터넷의 누구나 읽고/수정할 수 있습니다.
+-- 공개 서비스로 배포하기 전에는 Supabase Auth + 사용자별 RLS 정책으로 교체하세요.
+CREATE TABLE IF NOT EXISTS public.daily_quests (
+    id TEXT PRIMARY KEY,
+    date_str TEXT NOT NULL,
+    categories JSONB NOT NULL DEFAULT '[]'::jsonb,
+    title TEXT NOT NULL,
+    feedback_desc TEXT,
+    deadline_desc TEXT,
+    is_completed BOOLEAN DEFAULT FALSE,
+    proof_note TEXT DEFAULT '',
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS public.spark_actions (
+    id TEXT PRIMARY KEY,
+    idea_text TEXT NOT NULL,
+    immediate_action TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.daily_quests ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.spark_actions ENABLE ROW LEVEL SECURITY;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.daily_quests TO anon;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.spark_actions TO anon;
+
+DROP POLICY IF EXISTS "REAL X anon full access daily quests" ON public.daily_quests;
+CREATE POLICY "REAL X anon full access daily quests" ON public.daily_quests
+  FOR ALL TO anon USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "REAL X anon full access spark actions" ON public.spark_actions;
+CREATE POLICY "REAL X anon full access spark actions" ON public.spark_actions
+  FOR ALL TO anon USING (true) WITH CHECK (true);`;
+      navigator.clipboard.writeText(sql).then(() => {
+        alert('Supabase SQL 쿼리가 복사되었습니다! Supabase SQL Editor에 붙여넣으세요.');
+      });
+    }
+
+    function renderAll() {
+      renderPriming();
+      renderQuests();
+      renderSparks();
+      updateScoreAndCounts();
+      lucide.createIcons();
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeAddModal();
+        closeConfigModal();
+        closeMgmtModal();
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadData();
+      setActiveDate(getTodayStr());
+    });
+  </script>
+</body>
+</html>
